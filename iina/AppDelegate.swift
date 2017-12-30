@@ -256,8 +256,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let urls = pendingFilesForOpenFile.map { URL(fileURLWithPath: $0) }
 
     pendingFilesForOpenFile.removeAll()
-    if let openedFileCount = PlayerCore.activeOrNew.openURLs(urls), openedFileCount == 0 {
-      Utility.showAlert("nothing_to_open")
+    
+    // If the user's preference is set to always open files in a new window, then we
+    // need to spawn a new player for each URL. Otherwise, we will open the URLs in a single
+    // player. In this case the first URL will be made active, and the rest will
+    // be added to the playlist.
+    
+    if Preference.bool(for: .alwaysOpenInNewWindow) {
+      for url in urls {
+        PlayerCore.activeOrNew.openURL(url)
+      }
+    } else {
+      if let openedFileCount = PlayerCore.activeOrNew.openURLs(urls), openedFileCount == 0 {
+        Utility.showAlert("nothing_to_open")
+      }
     }
   }
 

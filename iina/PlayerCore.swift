@@ -905,6 +905,11 @@ class PlayerCore: NSObject {
         NSDocumentController.shared.noteNewRecentDocumentURL(url)
       }
     }
+    // If the secret default is set to skip, then do that.
+    if Preference.value(for: .autoSeekSeconds) != nil {
+      let autoSeekSeconds: Double = Preference.double(for: .autoSeekSeconds)
+      seek(absoluteSecond: autoSeekSeconds)
+    }
     NotificationCenter.default.post(Notification(name: Constants.Noti.fileLoaded))
   }
 

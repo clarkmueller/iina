@@ -191,6 +191,7 @@ struct Preference {
 
     /** Seek option */
     static let useExactSeek = Key("useExactSeek")
+    static let autoSeekSeconds = Key("autoSeekSeconds")
 
     /** Seek speed for non-exact relative seek (Int, 1~5) */
     static let relativeSeekAmount = Key("relativeSeekAmount")
